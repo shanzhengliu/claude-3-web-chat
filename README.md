@@ -28,3 +28,10 @@ You can easily build the project including frontend and backend via command `Doc
 1. build front end project in the step 1 in a stageBaseImage
 2. copy step 1 dist file to the backend-go/ui folder. and build go project.  
 3. copy go binary file from step 2 into a alpha image, and expose 8080 port. and run binary file. 
+
+### Docker Pull
+only 4mb image size. you can pull the image from docker hub. and run the image.
+```shell
+docker pull samliu960522/claude-3-chat-web:latest
+docker run -e ANTHROPIC_API_KEY='{your key}' -p 8080:8080 -d samliu960522/claude-3-chat-web:latest
+```
