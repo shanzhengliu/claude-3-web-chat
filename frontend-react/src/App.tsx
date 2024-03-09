@@ -156,10 +156,9 @@ function App() {
     }
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e:any) => {
     const file = e.target.files[0];
     if (!file) {
-      console;
       return;
     }
 

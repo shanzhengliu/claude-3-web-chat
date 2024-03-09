@@ -13,11 +13,11 @@ WORKDIR /app
 COPY ./backend-go/ .
 COPY --from=NodeBuild /app/dist/ ./ui/
 RUN go mod download
-RUN go build -o /app/main .
+RUN go build -ldflags="-s -w" -o /app/main .
 # go build end
 
 # final image
-FROM alpine:latest
+FROM gcr.io/distroless/static
 WORKDIR /app
 COPY --from=GoBuild app/ app/
 EXPOSE 8080
