@@ -217,7 +217,12 @@ function App() {
       alert("you can't send image after image");
       return;
     }
-
+    const extendsionMap: { [key: string]: string } = {
+      jpg: "jpeg",
+      jpeg: "jpeg",
+      png: "png",
+      gif: "gif",
+    };
     const reader = new FileReader();
     reader.onload = async () => {
       const fileExtension = file.name.split(".").pop();
@@ -239,10 +244,10 @@ function App() {
               source: {
                 type: "base64",
                 data: (reader.result as string).replace(
-                  "data:image/jpeg;base64,",
+                  `data:image/${extendsionMap[fileExtension]};base64,`,
                   ""
                 ),
-                media_type: `image/${fileExtension}`,
+                media_type: `image/${extendsionMap[fileExtension]}`,
               },
             },
           ],
