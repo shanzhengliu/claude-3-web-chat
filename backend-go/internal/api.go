@@ -7,7 +7,20 @@ import (
 	"net/http"
 )
 
+func WebsitePasswordVerify(r *http.Request) bool {
+	ctxMap := r.Context().Value("map").(map[string]interface{})
+	websitePassword := ctxMap["websitePassword"].(string)
+	if websitePassword == "" {
+		return true
+	}
+	return r.Header.Get("website-password") == websitePassword
+}
+
 func ApiCall(w http.ResponseWriter, r *http.Request) {
+	if !WebsitePasswordVerify(r) {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 	ctxMap := r.Context().Value("map").(map[string]interface{})
 	requestBody, err := io.ReadAll(r.Body)
 	if err != nil {
