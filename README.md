@@ -31,6 +31,8 @@ You can easily build the project including frontend and backend via command `Doc
 
 ### Docker Pull
 only 4mb image size. you can pull the image from docker hub. and run the image.
+docker environment variable `ANTHROPIC_API_KEY` is required.
+docker environment variable `WEBSITE_PASSWORD` is optional.
 ```shell
 docker pull samliu960522/claude-3-chat-web:latest
 docker run -e ANTHROPIC_API_KEY='{your key}' -p 8080:8080 -d samliu960522/claude-3-chat-web:latest
