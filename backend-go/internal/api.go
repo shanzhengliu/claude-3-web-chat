@@ -55,7 +55,7 @@ func ApiCall(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if response.StatusCode != 200 {
-		fmt.Printf("An Error Occured %v", responseBody)
+		fmt.Printf("An Error Occured %v", string(responseBody))
 		return
 	}
 	w.Write(ResponseToUiContext(string(responseBody)))
