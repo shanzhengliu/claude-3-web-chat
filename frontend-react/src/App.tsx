@@ -14,9 +14,7 @@ function App() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = React.useState(false);
   const [cacheSave, setCacheSave] = React.useState(0);
-  const [pageData, setPageData] = React.useState<
-    { role: string; pageData: string; type: string }[]
-  >([]);
+  const [pageData, setPageData] = React.useState<{ role: string; pageData: string; type: string }[]>([]);
   const [renderData, setRenderData] = React.useState<
   {
     role: string;
@@ -50,15 +48,16 @@ function App() {
             console.log(err);
           }); 
     }
-    setRenderData(JSON.parse(localStorage.getItem("renderData")!));
-    setPageData(JSON.parse(localStorage.getItem("pageData")!));   
+
+    setRenderData(JSON.parse(localStorage.getItem("renderData")||"[]"));
+    setPageData(JSON.parse(localStorage.getItem("pageData") || "[]"));   
    }, []);
 
 
   useEffect(() => {
     if(cacheSave === 0) return;
-    localStorage.setItem("renderData", JSON.stringify(renderData));
-    localStorage.setItem("pageData", JSON.stringify(pageData));
+      localStorage.setItem("renderData", JSON.stringify(renderData));
+      localStorage.setItem("pageData", JSON.stringify(pageData));
   }, [ cacheSave,renderData, pageData]);
 
   const [isComposing, setIsComposing] = React.useState(false);
@@ -95,6 +94,8 @@ function App() {
 
   const handleSend = async () => {
     if (!input.trim()) return;
+    //don't know why is empty
+    const tempPageData = pageData||[];
     if (
       renderData[renderData.length - 1]?.role === "user" &&
       renderData[renderData.length - 1]?.content[0]?.type === "image"
@@ -107,8 +108,9 @@ function App() {
         { role: "user", content: [{ text: input, type: "text" }] },
       ]);
     }
+
     setPageData([
-      ...pageData,
+      ...tempPageData,
       { role: "user", pageData: await handleMessage(input), type: "text" },
     ]);
     setInput("");
@@ -256,11 +258,6 @@ function App() {
       fileInputRef.current.click();
     }
   };
-
-  const cacheSettings = ()=>{
-     localStorage.setItem("renderData", JSON.stringify(renderData));
-     localStorage.setItem("pageData", JSON.stringify(pageData));
-  }
 
   useSWR(shouldFetch ? constant.VITE_BACKEND_API_CALL : null, fetcher);
 
