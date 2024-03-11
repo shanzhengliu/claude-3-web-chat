@@ -33,21 +33,21 @@ function App() {
 >([]);
 
   useEffect(() => {
-    if (localStorage.getItem("website-password")) {
-        const websitePassword = localStorage.getItem("website-password");
-        axios
-          .post(constant.VITE_BACKEND_API_AUTH, undefined, {
-            headers: { "website-password": websitePassword },
-          })
-          .then((res) => {
-            if (res.status === 200) {
-              setIsAuthenticated(true);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          }); 
-    }
+
+    const websitePassword = localStorage.getItem("website-password")||"";
+    axios
+      .post(constant.VITE_BACKEND_API_AUTH, undefined, {
+        headers: { "website-password": websitePassword },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          setIsAuthenticated(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      }); 
+    
 
     setRenderData(JSON.parse(localStorage.getItem("renderData")||"[]"));
     setPageData(JSON.parse(localStorage.getItem("pageData") || "[]"));   
