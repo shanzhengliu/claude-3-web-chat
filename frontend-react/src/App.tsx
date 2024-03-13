@@ -7,34 +7,37 @@ import * as marked from "marked";
 import hljs from "highlight.js";
 import * as cheerio from "cheerio";
 import "highlight.js/styles/default.css";
+import Setting from "./Setting";
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const [shouldFetch, setShouldFetch] = React.useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = React.useState(false);
   const [cacheSave, setCacheSave] = React.useState(0);
-  const [pageData, setPageData] = React.useState<{ role: string; pageData: string; type: string }[]>([]);
+  const [pageData, setPageData] = React.useState<
+    { role: string; pageData: string; type: string }[]
+  >([]);
   const [renderData, setRenderData] = React.useState<
-  {
-    role: string;
-    content: [
-      | {
-          source: {
-            data: string | undefined | ArrayBuffer;
-            media_type: string;
+    {
+      role: string;
+      content: [
+        | {
+            source: {
+              data: string | undefined | ArrayBuffer;
+              media_type: string;
+              type: string;
+            };
             type: string;
-          };
-          type: string;
-        }
-      | { text: string; type: string }
-    ];
-  }[]
->([]);
+          }
+        | { text: string; type: string }
+      ];
+    }[]
+  >([]);
 
   useEffect(() => {
-
-    const websitePassword = localStorage.getItem("website-password")||"";
+    const websitePassword = localStorage.getItem("website-password") || "";
     axios
       .post(constant.VITE_BACKEND_API_AUTH, undefined, {
         headers: { "website-password": websitePassword },
@@ -46,19 +49,17 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
-      }); 
-    
+      });
 
-    setRenderData(JSON.parse(localStorage.getItem("renderData")||"[]"));
-    setPageData(JSON.parse(localStorage.getItem("pageData") || "[]"));   
-   }, []);
-
+    setRenderData(JSON.parse(localStorage.getItem("renderData") || "[]"));
+    setPageData(JSON.parse(localStorage.getItem("pageData") || "[]"));
+  }, []);
 
   useEffect(() => {
-    if(cacheSave === 0) return;
-      localStorage.setItem("renderData", JSON.stringify(renderData));
-      localStorage.setItem("pageData", JSON.stringify(pageData));
-  }, [ cacheSave,renderData, pageData]);
+    if (cacheSave === 0) return;
+    localStorage.setItem("renderData", JSON.stringify(renderData));
+    localStorage.setItem("pageData", JSON.stringify(pageData));
+  }, [cacheSave, renderData, pageData]);
 
   const [isComposing, setIsComposing] = React.useState(false);
   const [input, setInput] = React.useState("");
@@ -95,7 +96,7 @@ function App() {
   const handleSend = async () => {
     if (!input.trim()) return;
     //don't know why is empty
-    const tempPageData = pageData||[];
+    const tempPageData = pageData || [];
     if (
       renderData[renderData.length - 1]?.role === "user" &&
       renderData[renderData.length - 1]?.content[0]?.type === "image"
@@ -122,6 +123,9 @@ function App() {
 
   const fetcher = async (url: string) => {
     const websitePassword = localStorage.getItem("website-password");
+    const model = localStorage.getItem("model")
+    const maxToken = localStorage.getItem("maxToken")
+    const temperature = localStorage.getItem("temperature")
     return await axios
       .post(url, renderData, {
         headers: {
@@ -129,10 +133,13 @@ function App() {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
           "website-password": websitePassword,
+          "model": model,
+          "temperature": temperature,
+          "max-token": maxToken
         },
       })
       .then(async (res) => {
-       setRenderData([
+        setRenderData([
           ...renderData,
           {
             role: "assistant",
@@ -266,8 +273,17 @@ function App() {
 
   useSWR(shouldFetch ? constant.VITE_BACKEND_API_CALL : null, fetcher);
 
+  function openSetting() {
+    setIsModalOpen(true);
+  }
+
+  function closeSetting() {
+    setIsModalOpen(false);
+  }
+
   return (
     <div>
+      <Setting isOpen={isModalOpen} onClose={closeSetting} />
       {!isAuthenticated ? (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -365,6 +381,12 @@ function App() {
                     className="px-1 py-0.5 text-white bg-green-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
                     Clear
+                  </button>
+                  <button
+                    onClick={openSetting}
+                    className="px-1 py-0.5 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  >
+                    Setting
                   </button>
                 </div>
                 <div className="flex justify-between items-center">
