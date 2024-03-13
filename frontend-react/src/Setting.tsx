@@ -66,15 +66,15 @@ if (!isOpen) return null;
                 </h3>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
-                  <label htmlFor="model" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an Model</label>
+                  <label htmlFor="model" className="block mb-2 text-sm font-medium text-gray-900">Select an Model</label>
                   <select aria-label="model" id="model" value={model} onChange={handleModelChange}   name="model" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                     <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
                     <option value="claude-3-opus-20240229">Claude 3 Opus</option>
                     </select>
                   </p>
-                  <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Temperature</label>
+                  <label  className="block mb-2 text-sm font-medium text-gray-900">Temperature</label>
                   <input  value={temperature}  onChange={handleTemperatureChange} type="number" min="0.1" max="1.0" step="0.1" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></input>
-                  <label  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Max Token</label>
+                  <label  className="block mb-2 text-sm font-medium text-gray-900">Max Token</label>
                   <input  value={maxToken}  onChange={handleMaxTokenChange} type="number" min="1" max="4096" step="1" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"></input>
                 </div>
               </div>
