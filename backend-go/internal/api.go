@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 )
 
 func WebsitePasswordVerify(r *http.Request) bool {
@@ -30,8 +31,10 @@ func ApiCall(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	url := "https://api.anthropic.com/v1/messages"
-
-	request, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(UiContextToRequestBody(string(requestBody)))))
+	maxToken  ,_:= strconv.Atoi(r.Header.Get("max-token"))
+	temperature, _ := strconv.ParseFloat(r.Header.Get("temperature"),64)
+	model := r.Header.Get("model")
+	request, err := http.NewRequest("POST", url, bytes.NewBuffer([]byte(UiContextToRequestBody(string(requestBody), model, temperature, maxToken))))
 	request.Header.Set("Content-Type", "application/json")
 	request.Header.Set("anthropic-version", "2023-06-01")
 	request.Header.Set("x-api-key", ctxMap["apikey"].(string))

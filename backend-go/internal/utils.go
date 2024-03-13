@@ -29,9 +29,10 @@ type Source struct {
 }
 
 type Body struct {
-	Messages  json.RawMessage `json:"messages"`
-	Model     string          `json:"model"`
-	MaxTokens int             `json:"max_tokens"`
+	Messages    json.RawMessage `json:"messages"`
+	Model       string          `json:"model"`
+	MaxTokens   int             `json:"max_tokens"`
+	Temperature float64         `json:"temperature"`
 }
 
 type ResponseContent struct {
@@ -45,9 +46,9 @@ type Response struct {
 	Content []ResponseContent `json:"content"`
 }
 
-func UiContextToRequestBody(uiContext string) []byte {
+func UiContextToRequestBody(uiContext string, model string, temperature float64, maxToken int) []byte {
 
-	requestBody := Body{Messages: json.RawMessage(uiContext), Model: "claude-3-opus-20240229", MaxTokens: 4096}
+	requestBody := Body{Messages: json.RawMessage(uiContext), Model: "claude-3-opus-20240229", MaxTokens: maxToken, Temperature: temperature}
 
 	jsonData, err := json.Marshal(requestBody)
 

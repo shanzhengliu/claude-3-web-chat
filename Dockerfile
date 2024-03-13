@@ -10,10 +10,12 @@ RUN pnpm build
 # go build start
 FROM golang:1.20.6-alpine3.18 AS GoBuild
 WORKDIR /app
+RUN apk add --no-cache upx
 COPY ./backend-go/ .
 COPY --from=NodeBuild /app/dist/ ./ui/
 RUN go mod download
 RUN go build -ldflags="-s -w" -o /app/main .
+RUN upx --brute /app/main
 # go build end
 
 # final image
