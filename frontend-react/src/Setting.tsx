@@ -7,7 +7,7 @@ interface ModalProps {
 }
 
 function Setting({ isOpen, onClose }: ModalProps) {
- const [model, setModel] = useState('claude-3-sonnet-20240229');
+ const [model, setModel] = useState('claude-3-haiku-20240307');
  const [temperature, setTemperature] = useState(0.7);
  const [maxToken, setMaxToken] = useState(2048);
 
@@ -15,7 +15,7 @@ function Setting({ isOpen, onClose }: ModalProps) {
     const model =localStorage.getItem('model');
     const temperature = Number(localStorage.getItem('temperature'));
     const maxToken = Number(localStorage.getItem('maxToken'));
-    if (!model) {localStorage.setItem('model', 'claude-3-sonnet-20240229');}
+    if (!model) {localStorage.setItem('model', 'claude-3-haiku-20240307');}
     if (!temperature) localStorage.setItem('temperature', '0.7');
     if (!maxToken) localStorage.setItem('maxToken', '2048');
 
@@ -36,7 +36,7 @@ function Setting({ isOpen, onClose }: ModalProps) {
     }
   const saveSettings = () => {
     if (!model || !temperature || !maxToken) { alert('Please fill all the fields'); onClose(); return }
-    if (model !== 'claude-3-sonnet-20240229' && model !== 'claude-3-opus-20240229') { alert('Model should be either Claude 3 Sonnet or Claude 3 Opus'); return }
+    if (model !== 'claude-3-sonnet-20240229' && model !== 'claude-3-opus-20240229' && model!= 'claude-3-haiku-20240307') { alert('Model should be either Claude 3 Sonnet, Claude 3 Opus or Claude 3 Haiku'); return }
     if (temperature < 0.1 || temperature > 1.0)  { alert('Temperature should be between 0.1 and 1.0');  return }
     if (maxToken < 1 || maxToken > 4096) { alert('Max Token should be between 1 and 4096');    return }
     localStorage.setItem('model', model);
@@ -70,6 +70,7 @@ if (!isOpen) return null;
                   <select aria-label="model" id="model" value={model} onChange={handleModelChange}   name="model" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
                     <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
                     <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                    <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
                     </select>
                   </p>
                   <label  className="block mb-2 text-sm font-medium text-gray-900">Temperature</label>
