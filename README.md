@@ -37,3 +37,9 @@ docker environment variable `WEBSITE_PASSWORD` is optional.
 docker pull samliu960522/claude-3-chat-web:latest
 docker run -e ANTHROPIC_API_KEY='{your key}' -p 8080:8080 -d samliu960522/claude-3-chat-web:latest
 ```
+
+### Deploy with Vercel
+[![Deploy with Vercel](https://vercel.com/button)](
+https://vercel.com/new/clone?repository-url=https://github.com/shanzhengliu/claude-3-web-chat&env=ANTHROPIC_API_KEY&envDescription=Anthropic%20API%20KEY%20for%20Claude%203%20WebChat&env=WEBSITE_PASSWORD&envDescription=And%20Your%20Website%20Password%20for%20Claude%203%20WebChat&project-name=claude-3-web-chat-clone&repository-name=claude-3-web-chat-clone)
+
+Click the button and you can deloy automatically after input necessary env variable
