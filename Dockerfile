@@ -23,4 +23,4 @@ FROM gcr.io/distroless/static
 WORKDIR /app
 COPY --from=GoBuild app/ app/
 EXPOSE 8080
-ENTRYPOINT [ "app/main" ]
+CMD [ "app/main" ]
